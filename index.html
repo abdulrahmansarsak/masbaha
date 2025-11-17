@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المسبحة الإلكترونية | Abdulrahman Sarsak</title>
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-elevated: #020617;
+      --bg-soft: #0b1120;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.18);
+      --danger: #f97373;
+      --border: #1f2937;
+      --card-radius: 20px;
+      --shadow-soft: 0 22px 55px rgba(0, 0, 0, 0.6);
+      --bead: radial-gradient(circle at 30% 30%, #f9fafb, #9ca3af 40%, #020617 80%);
+      --bead-active: radial-gradient(circle at 20% 20%, #bbf7d0, #22c55e 45%, #052e16 85%);
+      --primary-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body[data-theme="light"] {
+      --bg: #f3f4f6;
+      --bg-elevated: #ffffff;
+      --bg-soft: #e5e7eb;
+      --text: #020617;
+      --muted: #4b5563;
+      --accent: #16a34a;
+      --accent-soft: rgba(22, 163, 74, 0.12);
+      --border: #d1d5db;
+      --shadow-soft: 0 16px 40px rgba(15, 23, 42, 0.18);
+      --bead: radial-gradient(circle at 30% 30%, #f9fafb, #e5e7eb 45%, #9ca3af 90%);
+      --bead-active: radial-gradient(circle at 25% 20%, #dcfce7, #16a34a 45%, #064e3b 90%);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--primary-font);
+      background: radial-gradient(circle at top, #111827 0, var(--bg) 46%) fixed;
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 16px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      background: linear-gradient(145deg, rgba(148, 163, 184, 0.04), transparent);
+      border-radius: 28px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 12px;
+      backdrop-filter: blur(24px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 4px 4px 0;
+    }
+
+    .title-area {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-badge {
+      font-size: 0.75rem;
+      padding: 2px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--muted);
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toggle,
+    .pill-btn {
+      font-family: inherit;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.75);
+      color: var(--muted);
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      backdrop-filter: blur(14px);
+    }
+
+    body[data-theme="light"] .toggle,
+    body[data-theme="light"] .pill-btn {
+      background: rgba(249, 250, 251, 0.85);
+    }
+
+    .toggle span.icon {
+      font-size: 1rem;
+    }
+
+    .toggle.active,
+    .pill-btn.primary {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    main.layout {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .card {
+      border-radius: var(--card-radius);
+      background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.18), transparent 55%);
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border);
+      padding: 16px 16px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      background: radial-gradient(circle at top, rgba(34, 197, 94, 0.06), transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .card-subtitle {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* Rosary area */
+    .rosary-shell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .rosary-wrapper {
+      position: relative;
+      width: min(320px, 80vw);
+      height: min(320px, 80vw);
+      margin: 4px auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rosary-halo {
+      position: absolute;
+      inset: 12%;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.35);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.6),
+        0 0 60px 5px rgba(34, 197, 94, 0.08);
+    }
+
+    .rosary-circle {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: transform 0.18s ease-out;
+    }
+
+    .rosary-circle.bump {
+      animation: rosary-bump 0.18s ease-out;
+    }
+
+    @keyframes rosary-bump {
+      0% {
+        transform: rotate(0deg) scale(1);
+      }
+      40% {
+        transform: rotate(2deg) scale(1.01);
+      }
+      100% {
+        transform: rotate(0deg) scale(1);
+      }
+    }
+
+    .bead {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      margin: -9px;
+      border-radius: 999px;
+      background-image: var(--bead);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.6),
+        0 4px 10px rgba(15, 23, 42, 0.8);
+      transition: transform 0.15s ease-out, box-shadow 0.18s ease, background-image 0.18s ease;
+    }
+
+    .bead.imam {
+      width: 26px;
+      height: 26px;
+      margin: -13px;
+      background-image: radial-gradient(circle at 30% 20%, #fefce8, #facc15 40%, #854d0e 85%);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.7),
+        0 6px 16px rgba(15, 23, 42, 0.85);
+    }
+
+    .bead.active {
+      background-image: var(--bead-active);
+      transform: scale(1.28) translateZ(0);
+      box-shadow:
+        0 0 0 1px rgba(34, 197, 94, 0.8),
+        0 0 25px rgba(34, 197, 94, 0.7);
+      z-index: 2;
+    }
+
+    .string {
+      position: absolute;
+      inset: 22%;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.8);
+      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.4);
+      opacity: 0.75;
+    }
+
+    .center-display {
+      position: absolute;
+      inset: 25%;
+      border-radius: 28px;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98));
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.9),
+        0 18px 40px rgba(15, 23, 42, 0.9),
+        0 0 60px rgba(34, 197, 94, 0.18);
+      padding: 12px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    body[data-theme="light"] .center-display {
+      background: radial-gradient(circle at top, #f9fafb, #e5e7eb);
+      box-shadow:
+        0 0 0 1px rgba(148, 163, 184, 0.6),
+        0 12px 30px rgba(148, 163, 184, 0.45);
+    }
+
+    .phrase-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .current-phrase {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 90%;
+      overflow: hidden;
+    }
+
+    .current-count {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 1.9rem;
+      letter-spacing: 0.16em;
+      text-align: center;
+      padding-top: 4px;
+    }
+
+    .round-info {
+      font-size: 0.7rem;
+      color: var(--muted);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .round-pill {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 0.68rem;
+    }
+
+    .rosary-actions {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.14), rgba(15, 23, 42, 0.9));
+      color: var(--text);
+      padding: 8px 18px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      min-width: 120px;
+      justify-content: center;
+    }
+
+    .btn.primary {
+      border-color: var(--accent);
+      box-shadow:
+        0 0 0 1px rgba(34, 197, 94, 0.6),
+        0 12px 30px rgba(34, 197, 94, 0.25);
+      background: linear-gradient(135deg, var(--accent), #16a34a);
+      color: #022c22;
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.04);
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(34, 197, 94, 0.7),
+        0 18px 40px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn.secondary {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+      color: var(--muted);
+    }
+
+    body[data-theme="light"] .btn.secondary {
+      background: linear-gradient(145deg, #f9fafb, #e5e7eb);
+    }
+
+    .btn.secondary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.3);
+    }
+
+    .btn small {
+      font-size: 0.7rem;
+      opacity: 0.8;
+    }
+
+    /* Side card */
+    .side-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 4px;
+    }
+
+    .tasbih-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 6px;
+    }
+
+    .tasbih-chip {
+      font-size: 0.8rem;
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.16), transparent 60%);
+      background-color: rgba(15, 23, 42, 0.7);
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.4;
+      transition: all 0.14s ease;
+    }
+
+    body[data-theme="light"] .tasbih-chip {
+      background-color: rgba(249, 250, 251, 0.9);
+    }
+
+    .tasbih-chip span {
+      font-size: 0.7rem;
+      opacity: 0.8;
+      margin-inline-start: 4px;
+    }
+
+    .tasbih-chip.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
+    }
+
+    .target-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .target-pill {
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.14s ease;
+    }
+
+    .target-pill.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    body[data-theme="light"] .target-pill {
+      background-color: rgba(249, 250, 251, 0.9);
+    }
+
+    .target-input {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .target-input input {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      color: var(--text);
+      padding: 6px 10px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    body[data-theme="light"] .target-input input {
+      background: #f9fafb;
+    }
+
+    .target-input input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .stat-card {
+      border-radius: 14px;
+      padding: 7px 9px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.85));
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    body[data-theme="light"] .stat-card {
+      background: linear-gradient(145deg, #f9fafb, #e5e7eb);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.9rem;
+    }
+
+    .stat-hint {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .toggles-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .inline-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .inline-toggle input {
+      width: 32px;
+      height: 18px;
+      appearance: none;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.8);
+      position: relative;
+      outline: none;
+      transition: all 0.16s ease;
+    }
+
+    .inline-toggle input::before {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      top: 50%;
+      transform: translate(3px, -50%);
+      transition: all 0.16s ease;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.8);
+    }
+
+    .inline-toggle input:checked {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .inline-toggle input:checked::before {
+      transform: translate(15px, -50%);
+      background: #bbf7d0;
+    }
+
+    footer {
+      margin-top: 4px;
+      padding: 4px 6px 0;
+      border-top: 1px dashed rgba(148, 163, 184, 0.4);
+      font-size: 0.7rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+    }
+
+    footer span.name {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      main.layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding: 12px 10px 8px;
+        border-radius: 18px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .rosary-wrapper {
+        width: min(280px, 82vw);
+        height: min(280px, 82vw);
+      }
+
+      .btn {
+        padding: 8px 16px;
+        min-width: 0;
+        flex: 1;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="app">
+    <header>
+      <div class="title-area">
+        <div class="title">
+          المسبحة الإلكترونية
+          <span class="title-badge">وردك اليومي من الذِّكر</span>
+        </div>
+        <div class="subtitle">اضغط للتسبيح – الخرزة تتحرك، والصوت يرافقك، والعداد يحفظ وردك تلقائيًا.</div>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggle" class="toggle">
+          <span class="icon">🌙</span>
+          <span>الوضع الليلي</span>
+        </button>
+        <button id="resetAll" class="pill-btn">
+          تصفير الكل
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- Rosary card -->
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div>
+              <div class="card-title">المسبحة الرئيسية</div>
+              <div class="card-subtitle">إضغط على "سبّح" أو على مركز السبحة لزيادة العدّاد.</div>
+            </div>
+          </div>
+
+          <div class="rosary-shell">
+            <div class="rosary-wrapper" id="rosaryArea">
+              <div class="rosary-halo"></div>
+              <div class="string"></div>
+              <div class="rosary-circle" id="rosaryCircle"></div>
+              <div class="center-display" id="centerDisplay">
+                <div class="phrase-label">التسبيح الحالي</div>
+                <div class="current-phrase" id="currentPhrase">سبحان الله</div>
+                <div class="current-count" id="currentCount">000</div>
+                <div class="round-info">
+                  <div class="round-pill" id="roundInfo">
+                    الجولة 1 · الهدف 33
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rosary-actions">
+              <button class="btn primary" id="tasbeehBtn">
+                سبّح الآن
+                <small>اضغط أو استخدم المساحة</small>
+              </button>
+              <button class="btn secondary" id="resetRoundBtn">
+                تصفير الجولة الحالية
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Side controls -->
+      <section class="card">
+        <div class="card-inner side-grid">
+          <div>
+            <div class="section-title">عبارات التسبيح</div>
+            <div class="tasbih-list" id="tasbihList">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">الهدف</div>
+            <div class="target-row">
+              <button class="target-pill" data-target="33">33 تسبيحة</button>
+              <button class="target-pill" data-target="100">100 تسبيحة</button>
+              <div class="target-input">
+                <input type="number" id="customTarget" min="1" placeholder="هدف مخصص (مثلاً 1000)" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">الإحصائيات</div>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-label">اليوم</div>
+                <div class="stat-value" id="todayCount">0</div>
+                <div class="stat-hint">عدد التسبيحات لهذا اليوم</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">هذه الجلسة</div>
+                <div class="stat-value" id="sessionCount">0</div>
+                <div class="stat-hint">منذ فتح هذه الصفحة</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">الإجمالي</div>
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-hint">منذ بداية الاستخدام</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">الإعدادات</div>
+            <div class="toggles-row">
+              <label class="inline-toggle">
+                <input type="checkbox" id="soundToggle" checked />
+                <span>الصوت مع كل تسبيحة</span>
+              </label>
+              <label class="inline-toggle">
+                <input type="checkbox" id="tapAnywhereToggle" checked />
+                <span>التسبيح باللمس على السبحة</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="name">عبدالرحمن سرسك | Abdulrahman Sarsak</span>
+      <span>المسبحة الإلكترونية – ذكر، وخشوع، وتجربة رقمية راقية.</span>
+    </footer>
+  </div>
+
+  <script>
+    // ================== الإعدادات الأساسية ==================
+    const NUM_BEADS = 33;
+    const STORAGE_KEY = "tasbeeh-v1-state";
+
+    const phrases = [
+      "سبحان الله",
+      "الحمد لله",
+      "الله أكبر",
+      "لا إله إلا الله",
+      "استغفر الله",
+      "سبحان الله وبحمده",
+      "اللهم صل وسلم على نبينا محمد",
+      "لا حول ولا قوة إلا بالله"
+    ];
+
+    const state = {
+      currentPhrase: phrases[0],
+      target: 33,
+      roundCount: 0, // عدد التسبيحات في هذه الجولة
+      sessionCount: 0,
+      todayCount: 0,
+      totalCount: 0,
+      todayDate: new Date().toISOString().substring(0, 10)
+    };
+
+    let beads = [];
+    let audioContext = null;
+    let soundEnabled = true;
+    let tapAnywhereEnabled = true;
+
+    // ================== عناصر DOM ==================
+    const rosaryCircleEl = document.getElementById("rosaryCircle");
+    const currentCountEl = document.getElementById("currentCount");
+    const currentPhraseEl = document.getElementById("currentPhrase");
+    const roundInfoEl = document.getElementById("roundInfo");
+    const tasbeehBtn = document.getElementById("tasbeehBtn");
+    const resetRoundBtn = document.getElementById("resetRoundBtn");
+    const resetAllBtn = document.getElementById("resetAll");
+    const tasbihListEl = document.getElementById("tasbihList");
+    const todayCountEl = document.getElementById("todayCount");
+    const sessionCountEl = document.getElementById("sessionCount");
+    const totalCountEl = document.getElementById("totalCount");
+    const customTargetInput = document.getElementById("customTarget");
+    const soundToggle = document.getElementById("soundToggle");
+    const tapAnywhereToggle = document.getElementById("tapAnywhereToggle");
+    const themeToggle = document.getElementById("themeToggle");
+    const rosaryArea = document.getElementById("rosaryArea");
+
+    // ================== تحميل / حفظ الحالة ==================
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return;
+
+        const parsed = JSON.parse(saved);
+        Object.assign(state, parsed);
+
+        // إعادة ضبط عداد اليوم إذا تغيّر التاريخ
+        const today = new Date().toISOString().substring(0, 10);
+        if (state.todayDate !== today) {
+          state.todayDate = today;
+          state.todayCount = 0;
+        }
+      } catch (e) {
+        console.warn("تعذر تحميل الحالة المحفوظة", e);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn("تعذر حفظ الحالة", e);
+      }
+    }
+
+    // ================== بناء السبحة ==================
+    function buildRosary() {
+      rosaryCircleEl.innerHTML = "";
+      beads = [];
+      const centerX = 50;
+      const centerY = 50;
+      const radius = 40; // نسبة مئوية
+
+      for (let i = 0; i < NUM_BEADS; i++) {
+        const angle = (i / NUM_BEADS) * 360;
+        const bead = document.createElement("div");
+        bead.className = "bead";
+        bead.dataset.index = i.toString();
+
+        bead.style.transform = `translate(-50%, -50%) rotate(${angle}deg) translate(${radius}%) rotate(${-angle}deg)`;
+
+        beads.push(bead);
+        rosaryCircleEl.appendChild(bead);
+      }
+
+      // الخرزة "الإمام" في الأسفل
+      const imam = document.createElement("div");
+      imam.className = "bead imam";
+      const imamAngle = 90;
+      imam.style.transform = `translate(-50%, -50%) rotate(${imamAngle}deg) translate(${radius + 12}%) rotate(${-imamAngle}deg)`;
+      rosaryCircleEl.appendChild(imam);
+    }
+
+    // ================== واجهة المستخدم ==================
+    function formatCount(n) {
+      if (n < 1000) return n.toString().padStart(3, "0");
+      return n.toLocaleString("ar-SA");
+    }
+
+   
