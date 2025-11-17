@@ -39,7 +39,7 @@
     }
 
     .app-shell {
-      max-width: 480px;
+      max-width: 520px;
       width: 100%;
       background: radial-gradient(circle at top left, rgba(250, 204, 21, 0.07), transparent 55%),
                   radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.12), transparent 55%),
@@ -56,7 +56,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       gap: 12px;
     }
 
@@ -105,12 +105,76 @@
       box-shadow: 0 0 8px rgba(34, 197, 94, 0.85);
     }
 
+    /* قائمة الأذكار */
+    .dhikr-select-row {
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.8rem;
+    }
+
+    .dhikr-select-row label {
+      color: var(--muted);
+    }
+
+    .dhikr-select-wrapper {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .dhikr-select-wrapper select {
+      flex: 1;
+      min-width: 0;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text);
+      font-size: 0.85rem;
+      outline: none;
+      appearance: none;
+      direction: rtl;
+    }
+
+    .dhikr-select-wrapper select:focus {
+      border-color: rgba(250, 204, 21, 0.8);
+      box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.4);
+    }
+
+    .custom-dhikr-input {
+      width: 100%;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .custom-dhikr-input input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .custom-dhikr-input input::placeholder {
+      color: rgba(148, 163, 184, 0.8);
+    }
+
+    .custom-dhikr-input input:focus {
+      border-color: rgba(250, 204, 21, 0.9);
+    }
+
     /* MISBAHA AREA */
     .misbaha-card {
-      margin-top: 10px;
+      margin-top: 4px;
       background: radial-gradient(circle at top, rgba(15, 23, 42, 0.5), #020617 55%);
       border-radius: 26px;
-      padding: 18px 16px 16px;
+      padding: 16px 16px 16px;
       border: 1px solid rgba(148, 163, 184, 0.3);
       position: relative;
       overflow: hidden;
@@ -142,7 +206,7 @@
     }
 
     .dhikr-label {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       color: var(--muted);
     }
 
@@ -208,9 +272,9 @@
     }
 
     .main-count-value {
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+      font-size: clamp(2.2rem, 8vw, 3rem); /* تكبير واضح للأرقام */
+      font-weight: 800;
+      letter-spacing: 0.12em;
     }
 
     .sub-counts {
@@ -229,7 +293,7 @@
     .progress-track {
       position: relative;
       z-index: 1;
-      height: 5px;
+      height: 6px;
       width: 100%;
       border-radius: 999px;
       background: rgba(15, 23, 42, 0.85);
@@ -258,8 +322,8 @@
 
     .misbaha {
       position: relative;
-      width: 260px;
-      height: 260px;
+      width: 280px;
+      height: 280px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -327,8 +391,8 @@
 
     .misbaha-center-button {
       position: relative;
-      width: 132px;
-      height: 132px;
+      width: 160px;       /* تكبير زر الضغط */
+      height: 160px;      /* تكبير زر الضغط */
       border-radius: 999px;
       border: 2px solid rgba(250, 250, 250, 0.08);
       background: radial-gradient(circle at 30% 0%, rgba(250, 250, 250, 0.2), rgba(15, 23, 42, 0.9));
@@ -346,7 +410,7 @@
     .misbaha-center-button::before {
       content: "";
       position: absolute;
-      inset: 6px;
+      inset: 8px;
       border-radius: inherit;
       border: 1px dashed rgba(248, 250, 252, 0.22);
       opacity: 0.8;
@@ -368,21 +432,21 @@
     }
 
     .center-label-top {
-      font-size: 0.7rem;
+      font-size: 0.78rem;
       color: var(--muted);
       margin-bottom: 4px;
     }
 
     .center-tap-text {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
     .center-sub {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: #fef9c3;
     }
 
@@ -481,6 +545,7 @@
     .hint {
       font-size: 0.7rem;
       color: var(--muted);
+      text-align: left;
     }
 
     /* FOOTER */
@@ -527,13 +592,13 @@
       }
 
       .misbaha {
-        width: 230px;
-        height: 230px;
+        width: 250px;
+        height: 250px;
       }
 
       .misbaha-center-button {
-        width: 120px;
-        height: 120px;
+        width: 150px;
+        height: 150px;
       }
 
       .app-title {
@@ -550,13 +615,49 @@
           <span class="icon">📿</span>
           <span>المسبحة الإلكترونية</span>
         </div>
-        <div class="app-subtitle">عدّ تسبيح أنيق يعمل على الجوال والكمبيوتر</div>
+        <div class="app-subtitle">عدّ تسبيح أنيق – مناسب لكبار السن والجوال</div>
       </div>
       <div class="tag">
         <span class="tag-dot"></span>
         <span>وِرد اليوم</span>
       </div>
     </header>
+
+    <!-- اختيار الذكر -->
+    <section class="dhikr-select-row">
+      <label for="dhikrSelect">اختر الذكر:</label>
+      <div class="dhikr-select-wrapper">
+        <select id="dhikrSelect">
+          <option value="سبحان الله">سبحان الله</option>
+          <option value="الحمد لله">الحمد لله</option>
+          <option value="الله أكبر">الله أكبر</option>
+          <option value="لا إله إلا الله">لا إله إلا الله</option>
+          <option value="لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير">
+            لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير
+          </option>
+          <option value="سبحان الله وبحمده">سبحان الله وبحمده</option>
+          <option value="سبحان الله العظيم">سبحان الله العظيم</option>
+          <option value="سبحان الله وبحمده، سبحان الله العظيم">سبحان الله وبحمده، سبحان الله العظيم</option>
+          <option value="أستغفر الله">أستغفر الله</option>
+          <option value="اللهم صلِّ وسلم على نبينا محمد">اللهم صلِّ وسلم على نبينا محمد</option>
+          <option value="حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم">
+            حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم
+          </option>
+          <option value="لا حول ولا قوة إلا بالله">لا حول ولا قوة إلا بالله</option>
+          <option value="اللهم اغفر لي ولوالديَّ وللمؤمنين والمؤمنات">
+            اللهم اغفر لي ولوالديَّ وللمؤمنين والمؤمنات
+          </option>
+          <option value="custom">ذكر مخصص…</option>
+        </select>
+      </div>
+      <div class="custom-dhikr-input" id="customDhikrWrapper">
+        <input
+          id="customDhikrInput"
+          type="text"
+          placeholder="اكتب الذكر الذي ترغب به هنا…"
+        />
+      </div>
+    </section>
 
     <section class="misbaha-card">
       <div class="misbaha-header">
@@ -596,7 +697,7 @@
             <div class="center-labels">
               <div class="center-label-top">اضغط للتسبيح</div>
               <div class="center-tap-text">سَبِّح</div>
-              <div class="center-sub">لمس واحد = تسبيحة واحدة</div>
+              <div class="center-sub">ضغط واحد = تسبيحة واحدة</div>
             </div>
           </button>
 
@@ -612,7 +713,7 @@
           <span class="icon">↺</span>
           <span>تصفير العدّاد</span>
         </button>
-        <div class="hint">يتم حفظ عدّك تلقائيًا في هذا الجهاز</div>
+        <div class="hint">يتم حفظ عدّك تلقائيًا على هذا الجهاز</div>
       </div>
     </section>
 
@@ -631,6 +732,7 @@
     // إعدادات عامة
     const BEADS_COUNT = 33;
     const STORAGE_KEY = "tasbeeh_total_count_v1";
+    const DHIKR_KEY = "tasbeeh_current_dhikr_v1";
 
     const beadsRing = document.getElementById("beadsRing");
     const misbahaEl = document.getElementById("misbaha");
@@ -642,9 +744,14 @@
     const progressBar = document.getElementById("progressBar");
     const soundToggle = document.getElementById("soundToggle");
     const soundIcon = document.getElementById("soundIcon");
+    const dhikrTextEl = document.getElementById("dhikrText");
+    const dhikrSelectEl = document.getElementById("dhikrSelect");
+    const customDhikrWrapper = document.getElementById("customDhikrWrapper");
+    const customDhikrInput = document.getElementById("customDhikrInput");
 
     let totalCount = 0;
     let soundEnabled = true;
+    let beadElements = [];
 
     // Web Audio API للصوت
     let audioCtx = null;
@@ -683,8 +790,8 @@
     }
 
     // إنشاء خرزات المسبحة بشكل دائري
-    const beadElements = [];
     function createBeads() {
+      beadElements = [];
       const radius = 100; // نصف قطر الدائرة
       const centerX = 0;
       const centerY = 0;
@@ -732,6 +839,64 @@
       }
     }
 
+    // حفظ / تحميل الذكر الحالي
+    function loadDhikr() {
+      const storedDhikr = localStorage.getItem(DHIKR_KEY);
+      if (!storedDhikr) return;
+
+      // إذا كان من القائمة العادية
+      const options = Array.from(dhikrSelectEl.options);
+      const matchOption = options.find((opt) => opt.value === storedDhikr);
+      if (matchOption) {
+        dhikrSelectEl.value = storedDhikr;
+        dhikrTextEl.textContent = storedDhikr;
+        customDhikrWrapper.style.display = "none";
+      } else {
+        // نعتبره ذكر مخصص
+        dhikrSelectEl.value = "custom";
+        dhikrTextEl.textContent = storedDhikr;
+        customDhikrWrapper.style.display = "block";
+        customDhikrInput.value = storedDhikr;
+      }
+    }
+
+    function saveDhikr(text) {
+      try {
+        localStorage.setItem(DHIKR_KEY, text);
+      } catch (e) {
+        // تجاهل
+      }
+    }
+
+    function handleDhikrChange() {
+      const value = dhikrSelectEl.value;
+      if (value === "custom") {
+        customDhikrWrapper.style.display = "block";
+        if (customDhikrInput.value.trim().length > 0) {
+          dhikrTextEl.textContent = customDhikrInput.value.trim();
+          saveDhikr(customDhikrInput.value.trim());
+        } else {
+          dhikrTextEl.textContent = "ذكر مخصص";
+          saveDhikr("ذكر مخصص");
+        }
+      } else {
+        customDhikrWrapper.style.display = "none";
+        dhikrTextEl.textContent = value;
+        saveDhikr(value);
+      }
+    }
+
+    function handleCustomDhikrInput() {
+      const text = customDhikrInput.value.trim();
+      if (text.length === 0) {
+        dhikrTextEl.textContent = "ذكر مخصص";
+        saveDhikr("ذكر مخصص");
+      } else {
+        dhikrTextEl.textContent = text;
+        saveDhikr(text);
+      }
+    }
+
     // تحديث الواجهة
     function updateUI() {
       mainCountEl.textContent = totalCount.toString();
@@ -746,9 +911,8 @@
       progressBar.style.width = progress + "%";
 
       // تحديث الخرزات
-      const activeIndex = (withinRound === 0 && totalCount > 0)
-        ? BEADS_COUNT - 1
-        : withinRound - 1;
+      const activeIndex =
+        withinRound === 0 && totalCount > 0 ? BEADS_COUNT - 1 : withinRound - 1;
 
       beadElements.forEach((bead, index) => {
         bead.classList.remove("active", "trail");
@@ -766,8 +930,7 @@
     // حركة المسبحة
     function bumpMisbaha() {
       misbahaEl.classList.remove("bump");
-      // إجبار إعادة الحساب للأنيميشن
-      void misbahaEl.offsetWidth;
+      void misbahaEl.offsetWidth; // لإعادة تشغيل الأنيميشن
       misbahaEl.classList.add("bump");
     }
 
@@ -804,9 +967,17 @@
 
     resetBtn.addEventListener("click", resetCounter);
     soundToggle.addEventListener("click", toggleSound);
+    dhikrSelectEl.addEventListener("change", handleDhikrChange);
+    customDhikrInput.addEventListener("input", handleCustomDhikrInput);
 
     // بدء التشغيل
     loadCount();
+    loadDhikr();
+    // إذا لم يكن هناك ذكر مخزّن، نضبط أول خيار
+    if (!localStorage.getItem(DHIKR_KEY)) {
+      dhikrTextEl.textContent = dhikrSelectEl.value;
+      saveDhikr(dhikrSelectEl.value);
+    }
     updateUI();
   </script>
 </body>
